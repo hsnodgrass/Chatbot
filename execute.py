@@ -139,7 +139,7 @@ def train():
 
     # Only allocate 2/3 of the gpu memory to allow for running gpu-based predictions while training:
     gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.666)
-    config = tf.ConfigProto(gpu_options=gpu_options)
+    config = tf.ConfigProto(gpu_options=gpu_options, log_device_placement=True)
     config.gpu_options.allocator_type = 'BFC'
 
     with tf.Session(config=config) as sess:
