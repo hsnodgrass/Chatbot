@@ -8,6 +8,7 @@ A (somewhat) simple Chatbot for Slack backed by a Recurrent Neural Network(RNN).
 - SciPy
 - Six
 - Slackbot
+- NLTK
 
 The program is run in a Python virtual environment for Python 3.5, which is included in the `venv` directory.
 

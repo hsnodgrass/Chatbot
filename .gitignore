@@ -1,2 +1,4 @@
 __pycache__
 slackbot_settings.py
+.idea
+.git
