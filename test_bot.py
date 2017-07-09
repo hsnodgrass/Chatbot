@@ -80,7 +80,7 @@ def conversational_test(message):
 '''  
 
 
-    @respond_to('Initiate Test 4', re.IGNORECASE)
+@respond_to('Initiate Test 4', re.IGNORECASE)
 def conversational_test(message):
     message.send('Initiating Test 4 ...')
     message.send(f'{bot_name} Where do you live?')
