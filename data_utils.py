@@ -53,8 +53,12 @@ def basic_tokenizer(sentence):
     return [w for w in words if w]
 
 
-def tokenize(sentance):
-    return [word_tokenize(i) for i in sentance]
+def tokenize(sentence):
+    words = []
+    tokens = word_tokenize(sentence, language="english")
+    for _ in tokens:
+        words.extend(_)
+    return [tf.compat.as_bytes(w) for w in words if w]
 
 
 def create_vocabulary(vocabulary_path, data_path, max_vocabulary_size,

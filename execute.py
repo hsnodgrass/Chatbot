@@ -60,7 +60,7 @@ def get_config(config_file='seq2seq.ini'):
 
 # We use a number of buckets and pad to the closest one for efficiency.
 # See seq2seq_model.Seq2SeqModel for details of how they work.
-_buckets = [(5, 10), (10, 15), (20, 25), (40, 50)]
+_buckets = [(5, 10), (10, 15), (20, 25)]
 
 
 def read_data(source_path, target_path, max_size=None):
@@ -139,7 +139,7 @@ def train():
 
     # Only allocate 2/3 of the gpu memory to allow for running gpu-based predictions while training:
     gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.666)
-    config = tf.ConfigProto(gpu_options=gpu_options, log_device_placement=True)
+    config = tf.ConfigProto(gpu_options=gpu_options)
     config.gpu_options.allocator_type = 'BFC'
 
     with tf.Session(config=config) as sess:
@@ -234,7 +234,7 @@ def decode():
         sentence = sys.stdin.readline()
         while sentence:
             # Get token-ids for the input sentence.
-            token_ids = data_utils.sentence_to_token_ids(tf.compat.as_bytes(sentence), enc_vocab)
+            token_ids = data_utils.sentence_to_token_ids(sentence, enc_vocab)
             # Which bucket does it belong to?
             bucket_id = min([b for b in xrange(len(_buckets))
                              if _buckets[b][0] > len(token_ids)])
