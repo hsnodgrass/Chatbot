@@ -60,7 +60,7 @@ def get_config(config_file='seq2seq.ini'):
 
 # We use a number of buckets and pad to the closest one for efficiency.
 # See seq2seq_model.Seq2SeqModel for details of how they work.
-_buckets = [(5, 10), (10, 15), (20, 25)]
+_buckets = [(5, 10), (10, 15), (20, 25), (30, 40), (50, 65)]
 
 
 def read_data(source_path, target_path, max_size=None):
@@ -189,8 +189,8 @@ def train():
                 print("global step %d learning rate %.4f step-time %.2f perplexity "
                       "%.2f" % (model.global_step.eval(), model.learning_rate.eval(),
                                 step_time, perplexity))
-                # Decrease learning rate if no improvement was seen over last 3 times.
-                if len(previous_losses) > 2 and loss > max(previous_losses[-3:]):
+                # Decrease learning rate if no improvement was seen over last 10 times.
+                if len(previous_losses) > 10 and loss > max(previous_losses[-10:]):
                     sess.run(model.learning_rate_decay_op)
                 previous_losses.append(loss)
                 # Save checkpoint and zero timer and loss.
@@ -296,7 +296,7 @@ def init_session(sess, conf='seq2seq.ini'):
 
 def decode_line(sess, model, enc_vocab, rev_dec_vocab, sentence):
     # Get token-ids for the input sentence.
-    token_ids = data_utils.sentence_to_token_ids(tf.compat.as_bytes(sentence), enc_vocab)
+    token_ids = data_utils.sentence_to_token_ids(sentence, enc_vocab)
 
     # Which bucket does it belong to?
     bucket_id = min([b for b in xrange(len(_buckets)) if _buckets[b][0] > len(token_ids)])
