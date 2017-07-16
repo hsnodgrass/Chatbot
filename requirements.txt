@@ -1,8 +1,7 @@
+wheel
 numpy
 scipy
 six
 slackbot
-slackclient
-slacker
 nltk
 tensorflow==0.12.1
