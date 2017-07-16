@@ -8,7 +8,7 @@ A (somewhat) simple Chatbot for Slack backed by a Recurrent Neural Network(RNN).
 - SciPy
 - Six
 - Slackbot
-- NLTK
+- NLTK (punkt, a NLTK library, is also required. See `punkt_dl.py` script in repo)
 
 The program is run in a Python virtual environment for Python 3.5, which is included in the `venv` directory.
 
@@ -24,75 +24,14 @@ The program is run in a Python virtual environment for Python 3.5, which is incl
 5. Copy the `slack_integration` directory from the repo to your Python distribution's `site-packages` directory. Typically `/usr/lib/python3.5/site-packages/`
 6. `cd` to the repo, and run `venv/tensorflow/bin/python3.5 run.py`
 
-## Using the Docker Image as a testing environment
-*These instructions are Linux specific, but the work-flow can be transposed onto other environments.*
+## Using the Docker Image as a production environment
 ### Building the Docker image locally with the Dockerfile
 
-1. Verify that docker is installed and running non your system. 
--- Use the standard Docker "hello world" test.
-```bash
-$ docker run hello-world
-
-Hello from Docker!
-This message shows that your installation appears to be working correctly.
-
-To generate this message, Docker took the following steps:
-...(snipped)...
-```
-2. Download only the Dockerfile and the REQUIREMENTS files. 
-```bash
-$ wget https://raw.githubusercontent.com/CMSC495-Summer2017/Chatbot/master/Docker/Dockerfile
-$ wget https://raw.githubusercontent.com/CMSC495-Summer2017/Chatbot/master/Docker/REQUIREMENTS
-```
-3. Build the image in the directory where you downloaded the files in step 2.
-```bash
-$ docker build -t bot-testing .
-docker build -t bot-testing .
-Sending build context to Docker daemon  1.175GB
-Step 1/7 : FROM hoverbear/archlinux
- ---> 76cc92d512c3
-Step 2/7 : ADD REQUIREMENTS /
- ---> 9bdb33b16e18
-Removing intermediate container 2cf4d07844e1
-Step 3/7 : RUN pacman -Syu --noconfirm --force
- ---> Running in 54840b583c9b
-:: Synchronizing package databases...
-downloading core.db...
-downloading core.db...
-downloading core.db...
-downloading core.db...
-downloading core.db...
-downloading extra.db...
-downloading extra.db...
-downloading extra.db...
-...(snipped)...
-Successfully tagged bot-testing:latest
-```
-4. Run the docker image in the "source" directory. (The directory where you either cloned the entire
-   repo or where your own .py files are)
-```bash
-docker run -t -i --rm=true -v $(pwd):/source archtest /bin/bash
-```
-5. You will be dropped into a shell inside your new container. 
---* If you are running the test_bot.py you will need to edit the slackbot_settings_template.py file
-(or your local equivelent) and add the API_TOKEN. Vim has been installed into the image for this
-purpose. 
---* You can modify the Dockerfile to include another editor if you prefer (ie nano or emacs).
--- The container does not support GUI based editors.
-
-6. From this point, you can run the .py files as you would on your own system. 
-
-###Use pre-built docker image.
-1. Download just the Docker image 
-```bash
-$ wget
-https://raw.githubusercontent.com/CMSC495-Summer2017/Chatbot/master/Docker/bot-testing.latest.tar
-```
-2. Import the docker image 
-```bash
-docker load -i bot-testing.latest.tar
-```
-3. Change directories to your source directory. Then follow stesps 4-6 from section above. 
+1. Installing Docker is outside the scope of this repository, please see here for more information: https://docs.docker.com/engine/installation/
+2. Clone this repository
+3. Open a terminal (BASH or PowerShell depending on environment), and navigate to the repository directory
+4. Build the container using the following command: `docker build -t cmsc495:chatbot .`
+5. Run the container using the following command: `docker run -m 2g -p 80:80 -p 443:443 -e "SLACKBOT_API_TOKEN=<Your token from step 2 here>" cmsc495:chatbot`
 
 
 
